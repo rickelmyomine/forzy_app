@@ -1,0 +1,5 @@
+﻿codigo;nome;descricao
+0;Normal;Operacao dentro dos parametros esperados.
+1;Desbalanceamento;Vibracao alta e rotacao instavel.
+2;Superaquecimento;Temperatura e corrente elevadas.
+3;Falha mecanica;Queda de rotacao com vibracao e corrente altas.

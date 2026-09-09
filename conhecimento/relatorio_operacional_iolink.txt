@@ -1,0 +1,8 @@
+RELATÓRIO DE ESTADO OPERACIONAL — Sistema de monitoramento IO-Link — Período: 19/05/2026, 11h46–15h43
+
+
+Alertas emitidos: 24 no total, sendo 8 críticos, 8 moderados e 8 leves (fonte: episódios de anomalia detectados pelo Isolation Forest sobre History_3.csv, Seção 1).
+Ponto de medição em maior risco: d2_temperatura, responsável por 15 dos 24 episódios registrados (fonte: coluna sensor_top).
+Pior ocorrência do período: episódio 2, às 11:51:14, score de anomalia 0.73 (fonte: episódio 2, coluna score_max).
+Tendência por regime operacional: {'Em operação': 12, 'Ocioso': 12} (fonte: coluna estado dos episódios).
+Recomendações preliminares: priorizar inspeção térmica no ponto de medição predominante nos alertas críticos e confirmar, junto à engenharia, se a divergência observada entre pontos durante rampas é esperada.

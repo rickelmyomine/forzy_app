@@ -1,0 +1,142 @@
+[
+  {
+    "pergunta": "Quantos pontos de medição o sistema Forzy monitora?",
+    "chunk_ids_referencia": [
+      0
+    ],
+    "resposta_referencia": "O sistema monitora dois pontos de medição (Porta 1 e Porta 2) conectados a um Mestre IO-Link."
+  },
+  {
+    "pergunta": "Por que os dois pontos de medição parecem estar mecanicamente acoplados?",
+    "chunk_ids_referencia": [
+      0
+    ],
+    "resposta_referencia": "Porque a correlação entre suas leituras de velocidade é próxima de 1,0, sugerindo que monitoram o mesmo sistema mecânico."
+  },
+  {
+    "pergunta": "Quais variáveis cada sensor IO-Link reporta?",
+    "chunk_ids_referencia": [
+      1
+    ],
+    "resposta_referencia": "Cada ponto reporta velocidade, aceleração e temperatura."
+  },
+  {
+    "pergunta": "O Ponto 2 deveria estar mais quente que o Ponto 1?",
+    "chunk_ids_referencia": [
+      1
+    ],
+    "resposta_referencia": "Sim, o Ponto 2 opera sistematicamente mais quente, com diferença média de 5 a 6°C, o que é normal por projeto."
+  },
+  {
+    "pergunta": "Qual a faixa de velocidade esperada no regime ocioso?",
+    "chunk_ids_referencia": [
+      2
+    ],
+    "resposta_referencia": "Entre 0,03 e 0,06."
+  },
+  {
+    "pergunta": "Qual a faixa de velocidade esperada em operação plena?",
+    "chunk_ids_referencia": [
+      2
+    ],
+    "resposta_referencia": "Entre 6,3 e 7,7."
+  },
+  {
+    "pergunta": "Toda leitura fora da faixa de referência é uma falha confirmada?",
+    "chunk_ids_referencia": [
+      2
+    ],
+    "resposta_referencia": "Não, nem toda leitura fora da faixa típica representa falha confirmada; é preciso considerar o histórico recente."
+  },
+  {
+    "pergunta": "O que fazer se a temperatura estiver consistentemente alta?",
+    "chunk_ids_referencia": [
+      3
+    ],
+    "resposta_referencia": "Verificar ventilação/refrigeração, confirmar se a carga está dentro da especificação, e verificar a divergência entre os pontos."
+  },
+  {
+    "pergunta": "A partir de qual temperatura sustentada devo escalar para manutenção corretiva?",
+    "chunk_ids_referencia": [
+      3
+    ],
+    "resposta_referencia": "Acima de 45°C de forma sustentada."
+  },
+  {
+    "pergunta": "O que pode causar divergência de velocidade elevada entre os dois pontos?",
+    "chunk_ids_referencia": [
+      4
+    ],
+    "resposta_referencia": "Folgas ou desalinhamentos no acoplamento mecânico entre os pontos."
+  },
+  {
+    "pergunta": "Anomalia mecânica durante rampa de partida é sempre preocupante?",
+    "chunk_ids_referencia": [
+      4
+    ],
+    "resposta_referencia": "Não, é um comportamento transitório esperado; é mais preocupante se ocorrer em regime estabilizado."
+  },
+  {
+    "pergunta": "Qual o valor típico (mediana) de divergência de velocidade entre os pontos em condição normal?",
+    "chunk_ids_referencia": [
+      5
+    ],
+    "resposta_referencia": "0,04, no histórico de referência."
+  },
+  {
+    "pergunta": "Quando a divergência entre pontos é considerada anômala?",
+    "chunk_ids_referencia": [
+      5
+    ],
+    "resposta_referencia": "Quando ultrapassa 1,5 de forma recorrente fora de rampas de partida."
+  },
+  {
+    "pergunta": "Com que frequência deve ser feita a inspeção preventiva rápida?",
+    "chunk_ids_referencia": [
+      6
+    ],
+    "resposta_referencia": "Mensalmente."
+  },
+  {
+    "pergunta": "O que inclui o checklist trimestral de manutenção preventiva?",
+    "chunk_ids_referencia": [
+      6
+    ],
+    "resposta_referencia": "Lubrificação, revisão do cabeamento IO-Link, recalibração dos sensores e análise de tendência de temperatura e vibração."
+  },
+  {
+    "pergunta": "Qual o primeiro passo antes de uma manutenção corretiva?",
+    "chunk_ids_referencia": [
+      7
+    ],
+    "resposta_referencia": "Isolar o equipamento com segurança antes de qualquer intervenção."
+  },
+  {
+    "pergunta": "Por que registrar as leituras de sensor no momento da parada corretiva?",
+    "chunk_ids_referencia": [
+      7
+    ],
+    "resposta_referencia": "Para garantir rastreabilidade da condição do equipamento no momento da falha."
+  },
+  {
+    "pergunta": "O baseline atual cobre variações sazonais de longo prazo?",
+    "chunk_ids_referencia": [
+      8
+    ],
+    "resposta_referencia": "Não, foi calibrado sobre uma janela de apenas ~4 horas, não refletindo variações sazonais."
+  },
+  {
+    "pergunta": "Um alerta do sistema é um diagnóstico definitivo de falha?",
+    "chunk_ids_referencia": [
+      8
+    ],
+    "resposta_referencia": "Não, é um sinal estatístico de desvio que deve ser confirmado por inspeção humana."
+  },
+  {
+    "pergunta": "O que significa um alerta classificado como crítico?",
+    "chunk_ids_referencia": [
+      9
+    ],
+    "resposta_referencia": "Desvio significativo; recomenda-se inspeção física prioritária e verificação imediata das condições de operação."
+  }
+]

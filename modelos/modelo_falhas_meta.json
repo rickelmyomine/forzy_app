@@ -1,0 +1,68 @@
+{
+  "modelo": "HistGradientBoostingClassifier (sklearn)",
+  "features": [
+    "RPM",
+    "Vibracao",
+    "Temperatura",
+    "Corrente",
+    "RPM_roll_mean",
+    "Vibracao_roll_mean",
+    "Temperatura_roll_mean",
+    "Corrente_roll_mean",
+    "RPM_roll_std",
+    "Vibracao_roll_std",
+    "Temperatura_roll_std",
+    "Corrente_roll_std"
+  ],
+  "janela": 5,
+  "classes": {
+    "0": "Normal",
+    "1": "Desbalanceamento",
+    "2": "Superaquecimento",
+    "3": "Falha mecânica"
+  },
+  "acuracia_teste": 0.9798,
+  "f1_macro_teste": 0.9188,
+  "n_treino": 24000,
+  "n_teste": 6000,
+  "treinado_em": "2026-09-09T13:40:00.898209+00:00",
+  "relatorio": {
+    "0": {
+      "precision": 0.9929876360952206,
+      "recall": 0.984809663250366,
+      "f1-score": 0.988881742166682,
+      "support": 5464.0
+    },
+    "1": {
+      "precision": 0.9482071713147411,
+      "recall": 0.8880597014925373,
+      "f1-score": 0.9171483622350675,
+      "support": 268.0
+    },
+    "2": {
+      "precision": 0.7575757575757576,
+      "recall": 0.9562841530054644,
+      "f1-score": 0.8454106280193237,
+      "support": 183.0
+    },
+    "3": {
+      "precision": 0.8585858585858586,
+      "recall": 1.0,
+      "f1-score": 0.9239130434782609,
+      "support": 85.0
+    },
+    "accuracy": 0.9798333333333333,
+    "macro avg": {
+      "precision": 0.8893391058928944,
+      "recall": 0.9572883794370919,
+      "f1-score": 0.9188384439748334,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.9819033545254664,
+      "recall": 0.9798333333333333,
+      "f1-score": 0.9803813923168228,
+      "support": 6000.0
+    }
+  }
+}

@@ -1,0 +1,263 @@
+===============================================================
+ FORZY | FIAP - SPRINT 3
+ CORPUS ESTRUTURADO DE CONHECIMENTO DO PROJETO
+
+- Geandro Dezordi — 562316
+- Rickelmy Omine — 563286
+- Roberto Eduardo — 564537
+- Luccas Veronezi — 564202
+- Davi Barboza — 564053
+===============================================================
+
+Este documento reune fatos e respostas sobre o projeto Forzy em
+blocos padronizados (CATEGORIA / PERGUNTA / RESPOSTA). Foi
+pensado para servir de base de conhecimento (grounding) para o
+agente conversacional citado na Secao 11 do notebook da Sprint 3,
+podendo ser usado tambem como material de consulta rapida pela
+equipe.
+
+Cada bloco e independente e pode ser indexado/recuperado
+separadamente por um sistema de busca ou por um LLM.
+
+---------------------------------------------------------------
+[BLOCO 001]
+CATEGORIA: Projeto
+PERGUNTA: O que e o projeto Forzy?
+RESPOSTA: E um projeto academico da FIAP de manutencao preditiva
+para equipamentos industriais, desenvolvido em sprints. A Sprint 2
+construiu um classificador supervisionado de falhas sobre dados
+sinteticos. A Sprint 3 evoluiu o projeto construindo um modelo de
+deteccao de anomalias nao supervisionado sobre dados historicos
+reais de sensores.
+
+---------------------------------------------------------------
+[BLOCO 002]
+CATEGORIA: Dados
+PERGUNTA: De onde vem a base de dados usada na Sprint 3?
+RESPOSTA: Do arquivo History_3...csv, exportado de um Mestre
+IO-Link que monitora dois pontos de medicao (Porta 1 e Porta 2).
+Contem 7.183 leituras reais de velocidade, aceleracao e
+temperatura, coletadas entre 19/05/2026 11:46:10 e 19/05/2026
+15:43:14 (aproximadamente 3h57min).
+
+---------------------------------------------------------------
+[BLOCO 003]
+CATEGORIA: Dados
+PERGUNTA: A base de dados da Sprint 3 tem rotulo de falha?
+RESPOSTA: Nao. Diferente da base Motor.xlsx usada na Sprint 2
+(sintetica e rotulada em 4 classes de falha), a base History_3 nao
+possui nenhuma coluna de falha confirmada. Por isso a Sprint 3
+trata o problema como aprendizado nao supervisionado.
+
+---------------------------------------------------------------
+[BLOCO 004]
+CATEGORIA: Dados
+PERGUNTA: Quais variaveis (sensores) estao disponiveis na base
+historica?
+RESPOSTA: Seis sinais numericos: velocidade, aceleracao e
+temperatura, cada um medido em dois pontos (Porta 1 e Porta 2).
+
+---------------------------------------------------------------
+[BLOCO 005]
+CATEGORIA: Dados
+PERGUNTA: Por que a frequencia de amostragem dos dados e
+irregular?
+RESPOSTA: O sensor IO-Link parece estar configurado para relato
+por excecao: reporta com alta frequencia quando o valor esta
+mudando e quase para de reportar quando o equipamento esta
+estavel. A mediana do intervalo entre leituras e de cerca de 0,6
+segundos, mas ha lacunas que chegam a 228 segundos.
+
+---------------------------------------------------------------
+[BLOCO 006]
+CATEGORIA: EDA / Achados
+PERGUNTA: Qual foi o principal achado da analise exploratoria?
+RESPOSTA: A velocidade dos dois pontos de medicao (Porta 1 e Porta
+2) tem correlacao praticamente igual a 1,0, indicando que os dois
+pontos monitoram um sistema mecanicamente acoplado. Esse achado
+motivou a criacao de features de divergencia entre os pontos, que
+se mostraram uteis para detectar anomalias.
+
+---------------------------------------------------------------
+[BLOCO 007]
+CATEGORIA: EDA / Achados
+PERGUNTA: Quantos regimes operacionais foram identificados?
+RESPOSTA: Dois: "Ocioso" (velocidade proxima de zero) e "Em
+Operacao" (velocidade estabilizada entre aproximadamente 6,3 e
+7,7). A distincao entre os dois regimes foi essencial para nao
+confundir transicoes normais de liga/desliga com anomalias.
+
+---------------------------------------------------------------
+[BLOCO 008]
+CATEGORIA: Modelagem
+PERGUNTA: Quais modelos foram treinados para detectar anomalias?
+RESPOSTA: Tres modelos complementares: Isolation Forest (modelo
+principal), Local Outlier Factor - LOF (validacao cruzada por
+densidade local) e um Autoencoder implementado com rede neural
+rasa (validacao cruzada por erro de reconstrucao).
+
+---------------------------------------------------------------
+[BLOCO 009]
+CATEGORIA: Modelagem
+PERGUNTA: Por que usar tres modelos em vez de apenas um?
+RESPOSTA: Sem rotulos de falha confirmados, nao e possivel calcular
+metricas supervisionadas tradicionais. Usar tres modelos com
+logicas matematicas diferentes permite checar concordancia entre
+eles: leituras sinalizadas por multiplos modelos tem evidencia mais
+forte de serem anomalias reais.
+
+---------------------------------------------------------------
+[BLOCO 010]
+CATEGORIA: Modelagem
+PERGUNTA: Qual taxa de contaminacao (contamination) foi assumida?
+RESPOSTA: 3% (0,03). E uma escolha de projeto, nao um valor
+calibrado contra falhas reais confirmadas, ja que a base nao possui
+rotulos.
+
+---------------------------------------------------------------
+[BLOCO 011]
+CATEGORIA: Modelagem
+PERGUNTA: Como o modelo foi treinado e validado sem dados de
+teste rotulados?
+RESPOSTA: Os modelos foram treinados apenas com os primeiros 80%
+cronologicos da serie (assumidos como periodo de referencia
+normal) e depois aplicados a 100% dos dados, reduzindo o vies
+otimista sobre os ultimos 20% da serie.
+
+---------------------------------------------------------------
+[BLOCO 012]
+CATEGORIA: Resultados
+PERGUNTA: Quantas anomalias o Isolation Forest sinalizou?
+RESPOSTA: 181 leituras, o equivalente a 2,52% das 7.183 leituras
+totais da base.
+
+---------------------------------------------------------------
+[BLOCO 013]
+CATEGORIA: Resultados
+PERGUNTA: Quantas anomalias os outros modelos sinalizaram?
+RESPOSTA: O LOF sinalizou 216 leituras (3,01%) e o Autoencoder
+sinalizou 238 leituras (3,31%).
+
+---------------------------------------------------------------
+[BLOCO 014]
+CATEGORIA: Resultados
+PERGUNTA: Quantas leituras tiveram consenso entre os modelos?
+RESPOSTA: 85 leituras foram sinalizadas por 2 ou mais dos 3
+modelos simultaneamente, e 7 leituras foram sinalizadas pelos 3
+modelos ao mesmo tempo - esse subconjunto tem maior confianca de
+ser anomalia real.
+
+---------------------------------------------------------------
+[BLOCO 015]
+CATEGORIA: Resultados
+PERGUNTA: As anomalias ocorrem mais no regime Ocioso ou Em
+Operacao?
+RESPOSTA: No regime Em Operacao, a taxa de anomalia (Isolation
+Forest) foi de 4,13%, contra apenas 0,78% no regime Ocioso - cerca
+de 5 vezes maior durante a operacao ativa do equipamento.
+
+---------------------------------------------------------------
+[BLOCO 016]
+CATEGORIA: Resultados
+PERGUNTA: Qual sensor mais contribui para as anomalias de maior
+score?
+RESPOSTA: A Temperatura (tanto do Ponto 1 quanto do Ponto 2)
+domina o ranking dos casos de maior score, seguida por divergencias
+pontuais de velocidade entre os dois pontos de medicao.
+
+---------------------------------------------------------------
+[BLOCO 017]
+CATEGORIA: Resultados
+PERGUNTA: As anomalias sao eventos isolados ou se repetem?
+RESPOSTA: Foram identificados 24 episodios distintos de anomalia,
+com duracao curta (entre 12 e 38 segundos cada), concentrados nos
+momentos de partida/rampa do equipamento - nao sao eventos
+persistentes ao longo de horas.
+
+---------------------------------------------------------------
+[BLOCO 018]
+CATEGORIA: Interpretacao
+PERGUNTA: Por que as anomalias se concentram nas partidas do
+equipamento?
+RESPOSTA: Transicoes de regime (arranque) sao naturalmente raras em
+termos estatisticos comparadas aos estados estaveis de "ocioso" e
+"em operacao", e tendem a envolver maior estresse mecanico e
+termico transitorio - por isso concentram os maiores scores de
+anomalia.
+
+---------------------------------------------------------------
+[BLOCO 019]
+CATEGORIA: Interpretacao
+PERGUNTA: Uma anomalia sinalizada pelo modelo significa que houve
+falha?
+RESPOSTA: Nao necessariamente. O score de anomalia indica desvio
+estatistico do padrao aprendido, nao um diagnostico confirmado de
+falha. E um sinal de atencao para priorizar inspecao, nao um
+veredito automatico.
+
+---------------------------------------------------------------
+[BLOCO 020]
+CATEGORIA: Comparacao com Sprint 2
+PERGUNTA: Qual a diferenca entre o modelo da Sprint 2 e o da
+Sprint 3?
+RESPOSTA: A Sprint 2 usa classificacao supervisionada (LightGBM)
+sobre dados sinteticos rotulados, respondendo "qual falha conhecida
+e esta?". A Sprint 3 usa deteccao de anomalias nao supervisionada
+sobre dados reais sem rotulo, respondendo "isto foge do padrao
+normal?" - e consegue sinalizar problemas nunca vistos antes.
+
+---------------------------------------------------------------
+[BLOCO 021]
+CATEGORIA: Comparacao com Sprint 2
+PERGUNTA: As duas abordagens (Sprint 2 e Sprint 3) competem entre
+si?
+RESPOSTA: Nao, elas se complementam. A proposta e um pipeline em
+duas camadas: o detector de anomalias (Sprint 3) faz a triagem
+ampla de qualquer coisa fora do padrao, e o classificador (Sprint
+2) tenta um diagnostico mais especifico quando o padrao ja e
+conhecido.
+
+---------------------------------------------------------------
+[BLOCO 022]
+CATEGORIA: Agente conversacional
+PERGUNTA: Como o modelo de anomalias pode ser integrado a um
+agente conversacional?
+RESPOSTA: Atraves de uma tool de function calling chamada
+explicar_anomalia(timestamp), que retorna score, severidade, sensor
+responsavel e leituras brutas para um determinado momento -
+seguindo o mesmo padrao de arquitetura ja usado no agente da
+Sprint 2.
+
+---------------------------------------------------------------
+[BLOCO 023]
+CATEGORIA: Agente conversacional
+PERGUNTA: Que tipo de pergunta um usuario podera fazer ao agente
+sobre anomalias?
+RESPOSTA: Perguntas como "o ponto de medicao 2 teve alguma
+anomalia hoje de manha?", "qual foi o pior momento de desvio no
+equipamento X esta semana?" ou "por que essa leitura das 11h48 foi
+sinalizada como anomala?".
+
+---------------------------------------------------------------
+[BLOCO 024]
+CATEGORIA: Limitacoes
+PERGUNTA: Quais sao as principais limitacoes deste modelo?
+RESPOSTA: A janela de dados e relativamente curta (cerca de 4
+horas), nao ha rotulo de falha confirmado para validar as
+sinalizacoes, e a taxa de contaminacao (3%) foi uma escolha de
+projeto e nao um valor calibrado estatisticamente contra eventos
+reais.
+
+---------------------------------------------------------------
+[BLOCO 025]
+CATEGORIA: Proximos passos
+PERGUNTA: O que esta planejado para as proximas sprints?
+RESPOSTA: Conectar a funcao explicar_anomalia ao agente
+conversacional da Sprint 2, acumular mais historico de dados para
+recalibrar o baseline, e confirmar junto a Forzy se os regimes
+operacionais inferidos correspondem a um sinal oficial do
+equipamento.
+
+===============================================================
+ Fim do documento. 25 blocos estruturados.
+===============================================================
