@@ -86,7 +86,10 @@ def render_view3d():
     st.title("🧊 Visualização 3D do Ativo")
     st.caption(
         "Modelo 3D interativo do motor — arraste com o mouse para girar a câmera "
-        "e use o scroll para dar zoom. A cor, a rotação e a vibração do modelo "
+        "e use o scroll para dar zoom. Use os botões no canto superior direito da "
+        "cena para alternar entre **Vista Externa**, **Vista Explodida** (peças se "
+        "separam) e **Entrar no Motor** (câmera vai para dentro e revela estator, "
+        "rotor, rolamentos e bobinas). A cor, a rotação e a vibração do modelo "
         "refletem a telemetria em tempo real do ativo selecionado."
     )
 
@@ -178,5 +181,16 @@ def render_view3d():
 - **Tremor/vibração do modelo** — proporcional ao valor de `Vibração (mm/s)`.
 - **Brilho das aletas** — aumenta com a `Temperatura` do motor.
 - **Halo no piso** — pulsa mais rápido quanto mais crítico o estado do ativo.
+
+**Modos de visualização (botões no canto superior direito da cena):**
+- **🔩 Vista Externa** — o motor fechado, como a placa de identificação real (padrão WEG).
+- **🔧 Vista Explodida** — a tampa traseira, a flange dianteira e a caixa de ligação se
+  afastam ao longo do eixo, revelando o estator, o rotor e os rolamentos por dentro.
+  Use o controle deslizante "Separação das peças" para ajustar o quanto elas se afastam.
+- **🔍 Entrar no Motor** — a câmera se aproxima e a carcaça fica semitransparente,
+  permitindo "entrar" visualmente no motor e ver rótulos identificando cada peça
+  (estator, rotor, rolamentos, ventoinha, caixa de ligação).
+- **📷 Foto Real** — mostra/oculta uma miniatura da foto real do motor no canto da
+  cena, para comparar com o modelo 3D.
             """
         )
