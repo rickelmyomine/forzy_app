@@ -186,3 +186,11 @@ cadastrados que marcaram "receber alertas", no formato:
 ```
 
 O monitoramento contínuo (24 h) roda em outro terminal: `monitor_alertas.bat`.
+
+
+## Demonstração ao Vivo
+
+Acesse o dashboard interativo implantado no Streamlit Cloud: **[forzyapp.streamlit.app](https://forzyapp.streamlit.app/)**
+
+* **Usuário de teste:** `gerente`
+* **Senha:** `1234`
