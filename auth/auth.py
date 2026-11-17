@@ -95,6 +95,9 @@ def render_login():
     if esta_logado():
         return True
 
+    usuarios_disponiveis = _carregar_usuarios()
+    senha_demo = str(usuarios_disponiveis.get("gerente", {}).get("senha", "1234"))
+
     col_esq, col_centro, col_dir = st.columns([1, 1.4, 1])
     with col_centro:
         if os.path.exists(os.path.join("assets", "logo_second_corp.png")):
@@ -102,11 +105,16 @@ def render_login():
         st.markdown("### 🔐 Acesso ao Sistema de Gestão da Planta")
         st.caption("Telemetria, manutenção preditiva e gestão de ativos")
 
+        st.info("🔑 **Modo Demonstração:** Credenciais de Gerente já preenchidas. Basta clicar em **Entrar**.")
+
         with st.form("form_login", clear_on_submit=False):
-            usuario = st.text_input("Usuário", placeholder="gerente, tecnico1, tecnico2")
-            senha = st.text_input("Senha", type="password")
-            telefone = st.text_input("Telefone (DDD) *", placeholder="(DD) 123456789",
-                                     help="Telefone de quem está acessando — usado para os alertas de WhatsApp desta sessão.")
+            usuario = st.text_input("Usuário", value="gerente", placeholder="gerente, tecnico1, tecnico2")
+            senha = st.text_input("Senha", type="password", value=senha_demo)
+            telefone = st.text_input(
+                "Telefone (DDD) — opcional na demo",
+                placeholder="(DD) 123456789",
+                help="Telefone de quem está acessando — usado para os alertas de WhatsApp desta sessão.",
+            )
             entrar = st.form_submit_button("Entrar", use_container_width=True, type="primary")
 
         if entrar:
@@ -122,7 +130,7 @@ def render_login():
 
         with st.expander("Perfis de acesso", expanded=True):
             st.markdown(
-                "- **Gerente da manutenção** (`gerente`) — acesso total: cadastro de funcionários e de "
+                f"- **Gerente da manutenção** (`gerente` / senha `{senha_demo}`) — acesso total: cadastro de funcionários e de "
                 "equipamentos, manutenções, exclusões, envio de alertas e migração de dados.\n"
                 "- **Técnico de manutenção** (`tecnico1`, `tecnico2`) — registra manutenções e fotos, "
                 "cadastra equipamentos, faz coleta de dados, acompanha os dashboards e usa o Chat IA."
